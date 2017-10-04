@@ -4,6 +4,8 @@ var jwt = require('jsonwebtoken');
 var jwtOptions = require('../config/jwtoptions');
 // Our user model
 const User = require("../models/user");
+const Service = require("../models/service");
+const Section = require("../models/section");
 
 // Bcrypt let us encrypt passwords
 const bcrypt = require("bcrypt");
@@ -65,6 +67,30 @@ router.delete('/user/:id', function (req, res, next) {
 router.get('/services/:id', function (req, res, next) {
 });
 router.post('/services', function (req, res, next) {
+    //ned create url
+    User.findOne({ "name": req.body.name }, "name", (err, name) => {
+        if (name !== null) {
+            res.status(400).json({ message: 'name exist sorry bro' });
+            return;
+        }
+
+        var newService = Service({
+            name: req.body.name,
+            description: req.body.description,
+            tags: req.body.tags,
+            bigImage: req.body.bigImage,
+            user: req.params.id
+        });
+
+        newService.save((err, service) => {
+            if (err) {
+                return res.status(400).json({ message: err });
+            } else {
+                return res.status(200).json({ message: "ok", service: service });
+                // res.status(200).json(service);
+            }
+        });
+    });
 });
 router.put('/services/:id', function (req, res, next) {
 });
