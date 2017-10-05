@@ -15,6 +15,8 @@ var api = require('./routes/api');
 
 require("dotenv").config();
 
+// Testing git collaborator
+
 if (process.env.NODE_ENV === 'development') {
   mongoose.connect(process.env.DATABASE);
 } else {
