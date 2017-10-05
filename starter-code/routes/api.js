@@ -18,7 +18,7 @@ router.get('/users', function (req, res, next) {
         } else {
             res.status(200).json(userList)
         }
-    })
+    });
 });
 
 router.put('/user/:id', function (req, res, next) {
@@ -41,7 +41,7 @@ router.put('/user/:id', function (req, res, next) {
         web: req.body.web,
         userImage: req.body.userImage,
         bigImage: req.body.bigImage,
-    }
+    };
 
     User.findByIdAndUpdate(id, userToUpdate, function (err) {
         if (err) {
@@ -49,7 +49,7 @@ router.put('/user/:id', function (req, res, next) {
         } else {
             res.json({ message: "updated" })
         }
-    })
+    });
 });
 router.delete('/user/:id', function (req, res, next) {
     var id = req.params.id;
@@ -61,7 +61,7 @@ router.delete('/user/:id', function (req, res, next) {
         } else {
             res.json({ message: "delete", user: user })
         }
-    })
+    });
 });
 /* SERVICES*/
 router.get('/services/:id', function (req, res, next) {

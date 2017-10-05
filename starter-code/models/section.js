@@ -6,11 +6,11 @@ const sectionSchema = new Schema({
     description: String,
     tags: [],
     bigImage: String,
-    portfolio: {
+    portfolio: [{
         name: String,
         description: String,
         photo: String
-    },
+    }],
     user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     service: [{ type: Schema.Types.ObjectId, ref: 'Service' }]
 }, {
