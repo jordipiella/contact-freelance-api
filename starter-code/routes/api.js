@@ -143,6 +143,14 @@ router.delete('/service/:id', function (req, res, next) {
 });
 /* SECTION*/
 router.get('/section/:id', function (req, res, next) {
+    const id = req.params.id;
+    Section.findById({ "_id": id }, (err, service)=>{
+        if(err){
+            res.json(err)
+        } else {
+            res.status(200).json(service);
+        }
+    });
 });
 router.post('/section', function (req, res, next) {
 });
