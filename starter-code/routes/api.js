@@ -7,6 +7,9 @@ const User = require("../models/user");
 const Service = require("../models/service");
 const Section = require("../models/section");
 const Contact = require("../models/contact");
+const upload = require('../config/multer');
+//const multer = require('multer');
+
 
 
 // Bcrypt let us encrypt passwords
@@ -56,13 +59,10 @@ router.put('/user/:id', function (req, res, next) {
         linkedin: req.body.linkedin,
         facebook: req.body.facebook,
         google: req.body.google,
-        web: req.body.web,
-        userImage: req.body.userImage,
-        bigImage: req.body.bigImage,
+        web: req.body.web
     };
 
-    console.log(userToUpdate)
-    User.findByIdAndUpdate(id, userToUpdate, { new: true } function (err) {
+    User.findByIdAndUpdate(id, userToUpdate, { new: true }, function (err) {
         if (err) {
             res.json(err)
         } else {
@@ -70,23 +70,24 @@ router.put('/user/:id', function (req, res, next) {
         }
     });
 });
-router.post('/user/edit/:id', function (req, res, next) {
+router.post('/user/edit/:id', upload.array('file',2), function (req, res) {
+    
     var id = req.params.id;
-    var salt = bcrypt.genSaltSync(bcryptSalt);
-    var hashPass = bcrypt.hashSync(req.body.password, salt);
+    //console.log(req.files[0].filename, req.files[1].filename)
     var userToUpdate = {
-        userImage: req.body.userImage,
-        bigImage: req.body.bigImage,
+        userImage: `/uploads/${req.files[0].filename}`,
+        bigImage: `/uploads/${req.files[0].filename}`,
     };
 
-
-    User.findByIdAndUpdate(id, userToUpdate, {new:true}, function (err) {
+    User.findByIdAndUpdate(id, userToUpdate, function (err) {
         if (err) {
+            console.log('errorrrrr')
             res.json(err)
         } else {
-            res.json({ message: "updated" })
+            res.json({ message: "image updated" })
         }
     });
+
 });
 
 router.delete('/user/:id', function (req, res, next) {
