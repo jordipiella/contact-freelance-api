@@ -10,6 +10,7 @@ const Section = require("../models/section");
 // Bcrypt let us encrypt passwords
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
+
 /* USERS*/
 router.get('/users', function (req, res, next) {
     User.find({}, function (err, userList) {
@@ -24,12 +25,12 @@ router.get('/users', function (req, res, next) {
 //this was missing
 // another modification 
 //last
-router.get('/user/:id', function(req,res,next) {
+router.get('/user/:id', function (req, res, next) {
     const id = req.params.id;
 
-    User.findOne({"_id":id}, (err, user) =>{
+    User.findOne({ "_id": id }, (err, user) => {
         if (err) {
-            res.json(err) 
+            res.json(err)
         } else {
             res.status(200).json(user)
         }
@@ -68,7 +69,7 @@ router.put('/user/:id', function (req, res, next) {
 });
 router.delete('/user/:id', function (req, res, next) {
     var id = req.params.id;
-    
+
 
     User.findByIdAndRemove(id, function (err, user) {
         if (err) {
@@ -78,11 +79,12 @@ router.delete('/user/:id', function (req, res, next) {
         }
     });
 });
+
 /* SERVICES*/
 router.get('/service/:id', function (req, res, next) {
     const id = req.params.id;
-    Service.findById({ "_id": id }, (err, service)=>{
-        if(err){
+    Service.findById({ "_id": id }, (err, service) => {
+        if (err) {
             res.json(err)
         } else {
             res.status(200).json(service);
@@ -93,7 +95,7 @@ router.post('/service', function (req, res, next) {
     //ned create url
     Service.findOne({ "name": req.body.name }, "name", (err, name) => {
         if (name !== null) {
-            res.status(400).json({ message: 'name exist sorry bro' });
+            res.status(400).json({ message: 'this name already exist, sorry bro' });
             return;
         }
 
@@ -124,56 +126,108 @@ router.put('/service/:id', function (req, res, next) {
         bigImage: req.body.bigImage,
         user: req.body.id
     };
-    Service.findByIdAndUpdate({_id: id}, {serviceUpdates}, (err, service)=>{
-        if(err){
+    Service.findByIdAndUpdate({ _id: id }, serviceUpdates, {new:true}, (err, service) => {
+        if (err) {
             res.json(err);
         } else {
-            res.status(200).json(service);
+            res.status(200).json({ message: "ok", service: service });
         }
     });
 });
+
 router.delete('/service/:id', function (req, res, next) {
     const id = req.params.id;
-    Service.findByIdAndRemove({_id: id},  (err, service)=>{
-        if(err){
+    Service.findByIdAndRemove({ _id: id }, (err, service) => {
+        if (err) {
             res.json(err);
         } else {
             res.status(200).json(service);
         }
     })
 });
+
 /* SECTION*/
 router.get('/section/:id', function (req, res, next) {
     const id = req.params.id;
-    Section.findById({ "_id": id }, (err, service)=>{
-        if(err){
+    Section.findById({ "_id": id }, (err, section) => {
+        if (err) {
             res.json(err)
         } else {
-            res.status(200).json(service);
+            res.status(200).json(section);
         }
     });
 });
+
 router.post('/section', function (req, res, next) {
+    Section.findOne({ "name": req.body.name }, "name", (err, name) => {
+        if (name !== null) {
+            res.status(400).json({ message: 'this name already exist, sorry bro' });
+            return;
+        }
+        const newSection = Section({
+            name: req.body.name,
+            description: req.body.description,
+            tags: req.body.tags,
+            bigImage: req.body.bigImage,
+            portfolio: req.body.portfolio,
+            user: req.body.id
+        })
+
+        newSection.save((err, section) => {
+            if (err) {
+                return res.status(400).json({ message: err });
+            } else {
+                return res.status(200).json({ message: "ok", section: section });
+                // res.status(200).json(section);
+            }
+        })
+    });
 });
+
 router.put('/section/:id', function (req, res, next) {
+    const id = req.params.id;
+    const sectionUpdates = {
+        name: req.body.name,
+        description: req.body.description,
+        tags: req.body.tags,
+        bigImage: req.body.bigImage,
+        portfolio: req.body.portfolio,
+        user: req.body.id
+    };
+    Section.findByIdAndUpdate({ _id: id }, sectionUpdates, {new:true}, (err, section) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json({ message: "ok", section: section });
+        }
+    });
 });
+
 router.delete('/section/:id', function (req, res, next) {
+    const id = req.params.id;
+    Section.findByIdAndRemove({_id: id}, (err, section) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json({ message: "ok", section: section });
+        }
+    })
 });
 
 /* SEARCH */
 router.get('/freelance/:query', function (req, res, next) {
     const query = req.params.query;
-    User.find({$or:[{ "name": { "$regex": query, "$options": "g" }}]}, (err, usersList)=>{
-        if(err){
+    User.find({ $or: [{ "name": { "$regex": query, "$options": "g" } }] }, (err, usersList) => {
+        if (err) {
             res.json(err);
         } else {
             res.status(200).json(usersList)
-        } 
+        }
     });
 });
 router.get('/services/:query', function (req, res, next) {
     const query = req.params.query;
-    Service.find({ $or: [{ "name": { "$regex": query, "$options": "g" } }, { "description": { "$regex": query, "$options": "g" } }]}, (err, serviceList) => {
+    Service.find({ $or: [{ "name": { "$regex": query, "$options": "g" } }, { "description": { "$regex": query, "$options": "g" } }] }, (err, serviceList) => {
         if (err) {
             res.json(err);
         } else {
