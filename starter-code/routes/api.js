@@ -6,6 +6,8 @@ var jwtOptions = require('../config/jwtoptions');
 const User = require("../models/user");
 const Service = require("../models/service");
 const Section = require("../models/section");
+const Contact = require("../models/contact");
+
 
 // Bcrypt let us encrypt passwords
 const bcrypt = require("bcrypt");
@@ -144,7 +146,7 @@ router.delete('/service/:id', function (req, res, next) {
         if (err) {
             res.json(err);
         } else {
-            res.status(200).json(service);
+            res.status(200).json({message: "deleted", service: service});
         }
     });
 });
@@ -212,7 +214,7 @@ router.delete('/section/:id', function (req, res, next) {
         if (err) {
             res.json(err);
         } else {
-            res.status(200).json({ message: "ok", section: section });
+            res.status(200).json({ message: "deleted", section: section });
         }
     });
 });
@@ -257,6 +259,17 @@ router.post('/contact', function(req, res, next) {
     });
 });
 
+router.delete('/contact/:id', function(req, res, next) {
+    const id = req.params.id;
+    Contact.findByIdAndRemove({"_id": id}, (err, contact) => {
+        if (err) {
+            res.status(err)
+        } else {
+            res.status(200).json({message: "deleted", contact})
+        }
+    });
+})
+
 /* SEARCH */
 router.get('/freelance/:query', function (req, res, next) {
     const query = req.params.query;
@@ -278,6 +291,8 @@ router.get('/services/:query', function (req, res, next) {
         }
     });
 });
+
+/* EMAIL SEND */
 
 
 module.exports = router;
