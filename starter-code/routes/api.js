@@ -21,6 +21,18 @@ router.get('/users', function (req, res, next) {
     });
 });
 
+router.get('/user/:id', function(req,res,next) {
+    const id = req.params.id;
+
+    User.findOne({"_id":id}, (err, user) =>{
+        if (err) {
+            res.json(err) 
+        } else {
+            res.status(200).json(user)
+        }
+    })
+})
+
 router.put('/user/:id', function (req, res, next) {
     var id = req.params.id;
     var salt = bcrypt.genSaltSync(bcryptSalt);
