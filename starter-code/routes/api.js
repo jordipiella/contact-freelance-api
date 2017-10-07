@@ -76,11 +76,19 @@ router.delete('/user/:id', function (req, res, next) {
     });
 });
 /* SERVICES*/
-router.get('/services/:id', function (req, res, next) {
+router.get('/service/:id', function (req, res, next) {
+    const id = req.params.id;
+    Service.findById({ "_id": id }, (err, service)=>{
+        if(err){
+            res.json(err)
+        } else {
+            res.status(200).json(service);
+        }
+    });
 });
-router.post('/services', function (req, res, next) {
+router.post('/service', function (req, res, next) {
     //ned create url
-    User.findOne({ "name": req.body.name }, "name", (err, name) => {
+    Service.findOne({ "name": req.body.name }, "name", (err, name) => {
         if (name !== null) {
             res.status(400).json({ message: 'name exist sorry bro' });
             return;
@@ -91,7 +99,7 @@ router.post('/services', function (req, res, next) {
             description: req.body.description,
             tags: req.body.tags,
             bigImage: req.body.bigImage,
-            user: req.params.id
+            user: req.body.id
         });
 
         newService.save((err, service) => {
@@ -104,9 +112,32 @@ router.post('/services', function (req, res, next) {
         });
     });
 });
-router.put('/services/:id', function (req, res, next) {
+router.put('/service/:id', function (req, res, next) {
+    const id = req.params.id;
+    const serviceUpdates = {
+        name: req.body.name,
+        description: req.body.description,
+        tags: req.body.tags,
+        bigImage: req.body.bigImage,
+        user: req.body.id
+    };
+    Service.findByIdAndUpdate({_id: id}, {serviceUpdates}, (err, service)=>{
+        if(err){
+            res.json(err);
+        } else {
+            res.status(200).json(service);
+        }
+    });
 });
-router.delete('/services/:id', function (req, res, next) {
+router.delete('/service/:id', function (req, res, next) {
+    const id = req.params.id;
+    Service.findByIdAndRemove({_id: id},  (err, service)=>{
+        if(err){
+            res.json(err);
+        } else {
+            res.status(200).json(service);
+        }
+    })
 });
 /* SECTION*/
 router.get('/section/:id', function (req, res, next) {
@@ -120,8 +151,24 @@ router.delete('/section/:id', function (req, res, next) {
 
 /* SEARCH */
 router.get('/freelance/:query', function (req, res, next) {
+    const query = req.params.query;
+    User.find({$or:[{ "name": { "$regex": query, "$options": "g" }}]}, (err, usersList)=>{
+        if(err){
+            res.json(err);
+        } else {
+            res.status(200).json(usersList)
+        } 
+    });
 });
 router.get('/services/:query', function (req, res, next) {
+    const query = req.params.query;
+    Service.find({ $or: [{ "name": { "$regex": query, "$options": "g" } }, { "description": { "$regex": query, "$options": "g" } }]}, (err, serviceList) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json(serviceList)
+        }
+    });
 });
 
 
