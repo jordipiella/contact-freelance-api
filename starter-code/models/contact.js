@@ -3,12 +3,17 @@ const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
   name: String,
-  telf: String,
+  tel: String,
   email: String,
   message: String,
-  user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  service: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
-  section: [{ type: Schema.Types.ObjectId, ref: 'Section'}]
+  origin: {
+    type: String, 
+    enum: ['USER', 'SERVICE', 'SECTION'],
+    default: 'USER'
+  },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  service: { type: Schema.Types.ObjectId, ref: 'Service' },
+  section: { type: Schema.Types.ObjectId, ref: 'Section'}
 }, {
       timestamps: {
           createdAt: "created_at",

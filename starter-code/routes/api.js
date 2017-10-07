@@ -59,7 +59,7 @@ router.put('/user/:id', function (req, res, next) {
         bigImage: req.body.bigImage,
     };
 
-    User.findByIdAndUpdate(id, userToUpdate, function (err) {
+    User.findByIdAndUpdate(id, userToUpdate, {new:true}, function (err) {
         if (err) {
             res.json(err)
         } else {
@@ -67,6 +67,7 @@ router.put('/user/:id', function (req, res, next) {
         }
     });
 });
+
 router.delete('/user/:id', function (req, res, next) {
     var id = req.params.id;
 
@@ -91,6 +92,7 @@ router.get('/service/:id', function (req, res, next) {
         }
     });
 });
+
 router.post('/service', function (req, res, next) {
     //ned create url
     Service.findOne({ "name": req.body.name }, "name", (err, name) => {
@@ -117,6 +119,7 @@ router.post('/service', function (req, res, next) {
         });
     });
 });
+
 router.put('/service/:id', function (req, res, next) {
     const id = req.params.id;
     const serviceUpdates = {
@@ -143,7 +146,7 @@ router.delete('/service/:id', function (req, res, next) {
         } else {
             res.status(200).json(service);
         }
-    })
+    });
 });
 
 /* SECTION*/
@@ -211,7 +214,47 @@ router.delete('/section/:id', function (req, res, next) {
         } else {
             res.status(200).json({ message: "ok", section: section });
         }
-    })
+    });
+});
+
+/* CONTACT */
+router.get('/contacts', function(req, res, next) {
+    Contact.find({}, (err, contactList) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json(contactList)
+        }
+    });
+});
+
+router.get('/contact/:id', function(req, res, next) {
+    const id = req.params.id;
+    Contact.findById({"_id": id}, (err, contact) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json(contact)
+        }
+    });
+});
+
+router.post('/contact', function(req, res, next) {
+    const newContact = Contact({
+        name: req.body.name,
+        telf: req.body.telf,
+        email: req.body.email, 
+        message: req.body.message,
+        user: req.body.id
+    });
+
+    newContact.save((err, contact) => {
+        if (err) {
+            return res.status(400).json({ message: err });
+        } else {
+            return res.status(200).json({ message: "ok", contact: contact });
+        }
+    });
 });
 
 /* SEARCH */
