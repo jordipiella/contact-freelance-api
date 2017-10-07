@@ -57,7 +57,24 @@ router.put('/user/:id', function (req, res, next) {
         userImage: req.body.userImage,
         bigImage: req.body.bigImage,
     };
-
+    console.log(userToUpdate)
+    User.findByIdAndUpdate(id, userToUpdate, function (err) {
+        if (err) {
+            res.json(err)
+        } else {
+            res.json({ message: "updated" })
+        }
+    });
+});
+router.post('/user/edit/:id', function (req, res, next) {
+    var id = req.params.id;
+    var salt = bcrypt.genSaltSync(bcryptSalt);
+    var hashPass = bcrypt.hashSync(req.body.password, salt);
+    var userToUpdate = {
+        userImage: req.body.userImage,
+        bigImage: req.body.bigImage,
+    };
+    console.log(userToUpdate)
     User.findByIdAndUpdate(id, userToUpdate, function (err) {
         if (err) {
             res.json(err)
