@@ -14,18 +14,18 @@ nodemailer.createTestAccount((err, account) => {
   
       // create reusable transporter object using the default SMTP transport
       let transporter = nodemailer.createTransport({
-          host: 'smtp.ethereal.email',
-          port: 587,
-          secure: false, // true for 465, false for other ports
-          auth: {
-              user: account.user, // generated ethereal user
-              pass: account.pass  // generated ethereal password
-          }
-      });
+        host: account.smtp.host,
+        port: account.smtp.port,
+        secure: account.smtp.secure,
+        auth: {
+            user: account.user,
+            pass: account.pass
+        }
+    });
 
       // setup email data with unicode symbols
       let mailOptions = {
-          from: '"Fred Foo 👻" <pol89.gn@gmail.com>', // sender address
+          from: '"Fred Foo 👻" <admin@clinicaricardomunoz.com>', // sender address
           to: 'pol89.gn@gmail.com', // list of receivers
           subject: 'Hello ✔', // Subject line
           text: 'Hello world?', // plain text body
