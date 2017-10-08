@@ -12,7 +12,8 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const api = require('./routes/api');
-const mail = require('./routes/mail')
+const mail = require('./routes/mail');
+const public = require('./routes/public')
 
 require("dotenv").config();
 
@@ -47,6 +48,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/doc', index);
 app.use('/', auth);
+app.use('/', public);
 //app.use('/api', api);
 
 app.use('/api', passport.authenticate('jwt', { session: false }), api);
