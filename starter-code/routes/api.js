@@ -76,7 +76,7 @@ router.post('/user/edit/:id', upload.array('file',2), function (req, res) {
     //console.log(req.files[0].filename, req.files[1].filename)
     var userToUpdate = {
         userImage: `/uploads/${req.files[0].filename}`,
-        bigImage: `/uploads/${req.files[0].filename}`,
+        bigImage: `/uploads/${req.files[1].filename}`,
     };
 
     User.findByIdAndUpdate(id, userToUpdate, function (err) {
@@ -104,9 +104,21 @@ router.delete('/user/:id', function (req, res, next) {
 });
 
 /* SERVICES*/
+//All services
+router.get('/services', function (req, res, next) {
+    const id = req.params.id;
+    Service.find({}, (err, services) => {
+        if (err) {
+            res.json(err)
+        } else {
+            res.status(200).json(services);
+        }
+    });
+});
+//Services from 1 user (:id-->user id)
 router.get('/service/:id', function (req, res, next) {
     const id = req.params.id;
-    Service.findById({ "_id": id }, (err, service) => {
+    Service.find({ "user": id }, (err, service) => {
         if (err) {
             res.json(err)
         } else {
@@ -127,8 +139,39 @@ router.post('/service', function (req, res, next) {
             name: req.body.name,
             description: req.body.description,
             tags: req.body.tags,
-            bigImage: req.body.bigImage,
-            user: req.body.id
+            user: req.body.user
+        });
+
+        newService.save((err, service) => {
+            if (err) {
+                return res.status(400).json({ message: err });
+            } else {
+                return res.status(200).json({ message: "ok", service: service });
+                // res.status(200).json(service);
+            }
+        });
+    });
+});
+router.post('/service/image/', upload.single('file'), function (req, res) {
+
+    var id = req.params.id;
+    
+    Service.findOne({ "name": req.body.name }, "name", (err, name) => {
+        if (name !== null) {
+            res.status(400).json({ message: 'this name already exist, sorry bro' });
+            return;
+        }
+        //helper convertir string tags a array tags cnovertir a función fuera de la ruta
+        var obj = req.body.tags.split(' ').join('')
+        obj = obj.split(",");
+    
+
+        var newService = Service({
+            name: req.body.name,
+            description: req.body.description,
+            tags: obj,
+            user: req.body.user,
+            bigImage: `/uploads/${req.file.filename}`
         });
 
         newService.save((err, service) => {

@@ -6,7 +6,7 @@ const serviceSchema = new Schema({
     description: String,
     tags: [],
     bigImage: String,
-    user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }]
 }, {
         timestamps: {
