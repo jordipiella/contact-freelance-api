@@ -252,7 +252,7 @@ router.post('/section', function (req, res, next) {
     });
 });
 
-router.put('/section/:id', function (req, res, next) {
+router.put('/sections/:id', function (req, res, next) {
     const id = req.params.id;
     const sectionUpdates = {
         name: req.body.name,
