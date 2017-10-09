@@ -8,7 +8,8 @@ const Service = require("../models/service");
 const Section = require("../models/section");
 const Contact = require("../models/contact");
 const upload = require('../config/multer');
-//const multer = require('multer');
+const arrayTags = require('../helpers/arrayTags');
+
 
 
 
@@ -116,9 +117,19 @@ router.get('/services', function (req, res, next) {
     });
 });
 //Services from 1 user (:id-->user id)
-router.get('/service/:id', function (req, res, next) {
+router.get('/services/:id', function (req, res, next) {
     const id = req.params.id;
     Service.find({ "user": id }, (err, service) => {
+        if (err) {
+            res.json(err)
+        } else {
+            res.status(200).json(service);
+        }
+    });
+});
+router.get('/service/:id', function (req, res, next) {
+    const id = req.params.id;
+    Service.findOne({ "_id": id }, (err, service) => {
         if (err) {
             res.json(err)
         } else {
@@ -161,10 +172,7 @@ router.post('/service/image/', upload.single('file'), function (req, res) {
             res.status(400).json({ message: 'this name already exist, sorry bro' });
             return;
         }
-        //helper convertir string tags a array tags cnovertir a función fuera de la ruta
-        var obj = req.body.tags.split(' ').join('')
-        obj = obj.split(",");
-    
+        var obj = arrayTags(req.body.tags);
 
         var newService = Service({
             name: req.body.name,
@@ -215,9 +223,32 @@ router.delete('/service/:id', function (req, res, next) {
 });
 
 /* SECTION*/
+// router.get('/sections/:id', function (req, res, next) {
+//     const id = req.params.id;
+//     Section.find({ "service": id }, (err, section) => {
+//         if (err) {
+//             res.json(err)
+//         } else {
+//             res.status(200).json(section);
+//         }
+//     });
+// });
+router.get('/sections/:id', function (req, res, next) {
+    const id = req.params.id;
+    const p = req.params.p;
+    Section.find({ "service": id }, (err, section) => {
+        if (err) {
+            res.json(err)
+        } else {
+            res.status(200).json(section);
+        }
+    })
+    .limit(0)
+    .skip(0);
+});
 router.get('/section/:id', function (req, res, next) {
     const id = req.params.id;
-    Section.findById({ "_id": id }, (err, section) => {
+    Section.findOne({ "_id": id }, (err, section) => {
         if (err) {
             res.json(err)
         } else {
@@ -251,8 +282,36 @@ router.post('/section', function (req, res, next) {
         })
     });
 });
+router.post('/section/image', upload.single('file'), function (req, res, next) {
+    Section.findOne({ "name": req.body.name }, "name", (err, name) => {
+        if (name !== null) {
+            res.status(400).json({ message: 'this name already exist, sorry bro' });
+            return;
+        }
+        var obj = arrayTags(req.body.tags);
 
-router.put('/sections/:id', function (req, res, next) {
+        const newSection = Section({
+            name: req.body.name,
+            description: req.body.description,
+            tags: obj,
+            bigImage: `/uploads/${req.file.filename}`,
+            portfolio: req.body.portfolio,
+            user: req.body.user,
+            service: req.body.service
+        })
+
+        newSection.save((err, section) => {
+            if (err) {
+                return res.status(400).json({ message: err });
+            } else {
+                return res.status(200).json({ message: "ok", section: section });
+                // res.status(200).json(section);
+            }
+        })
+    });
+});
+
+router.put('/section/:id', function (req, res, next) {
     const id = req.params.id;
     const sectionUpdates = {
         name: req.body.name,
