@@ -44,6 +44,7 @@ router.get('/user/:id', function (req, res, next) {
 })
 
 router.put('/user/:id', function (req, res, next) {
+    console.log('edita datos normales')
     var id = req.params.id;
     var salt = bcrypt.genSaltSync(bcryptSalt);
     var hashPass = bcrypt.hashSync(req.body.password, salt);
@@ -71,13 +72,18 @@ router.put('/user/:id', function (req, res, next) {
         }
     });
 });
-router.post('/user/edit/:id', upload.array('file',2), function (req, res) {
+router.post('/user/edit/:id', upload.fields([
+    { name: 'userImage', maxCount: 1 },
+    { name: 'bigImage', maxCount: 1 }
+]), function (req, res) {
     
     var id = req.params.id;
-    //console.log(req.files[0].filename, req.files[1].filename)
+    console.log('entra arrayImages', req.file, req.files)
+    // console.log(req.files[0].filename, req.files[1].filename)
     var userToUpdate = {
-        userImage: `/uploads/${req.files[0].filename}`,
-        bigImage: `/uploads/${req.files[1].filename}`,
+        //userImage: `/uploads/${req.file.filename}`
+        //userImage: `/uploads/${req.files[0].filename}`,
+        //bigImage: `/uploads/${req.file.filename}`
     };
 
     User.findByIdAndUpdate(id, userToUpdate, function (err) {

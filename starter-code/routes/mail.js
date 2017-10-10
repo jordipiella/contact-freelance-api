@@ -36,13 +36,13 @@ nodemailer.createTestAccount((err, account) => {
           html: '<b>Hello world?</b>' // html body
       };
       // verify connection configuration // esto solo verifica se puede comentar
-      transporter.verify(function (error, success) {
-          if (error) {
-              console.log(error);
-          } else {
-              console.log('Server is ready to take our messages');
-          }
-      });
+    //   transporter.verify(function (error, success) {
+    //       if (error) {
+    //           console.log(error);
+    //       } else {
+    //           console.log('Server is ready to take our messages');
+    //       }
+    //   });
       //esto envia el email  lo he comentado para que no envie cada vez que arranca un email
     //   transporter.sendMail(mailOptions, (error, info) => {
     //       if (error) {
