@@ -33,4 +33,17 @@ router.get('/public-service/:id', function (req, res, next) {
     })
   })
 
+// public section
+router.get('/public-section/:id', function (req, res, next) {
+    const id = req.params.id;
+
+    Section.findOne({"service": id}, (err, user) => {
+        if (err) {
+            res.json(err)
+        } else {
+            res.status(200).json(user)
+        }
+    })
+})
+
 module.exports = router;
