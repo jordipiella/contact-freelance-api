@@ -8,7 +8,7 @@ const Section = require("../models/section");
 const Contact = require("../models/contact");
 
 // public profile
-router.get('/profile/:id', function (req, res, next) {
+router.get('/public-profile/:id', function (req, res, next) {
   const id = req.params.id;
 
   User.findOne({ "_id": id }, (err, user) => {
@@ -20,8 +20,8 @@ router.get('/profile/:id', function (req, res, next) {
   })
 })
 
-// public service
-router.get('/public-service/:id', function (req, res, next) {
+// public profile service and avoid the change of url on browser.
+router.get('/public-profile-service/:id', function (req, res, next) {
     const id = req.params.id;
   
     Service.find({ "user": id }, (err, user) => {
@@ -33,8 +33,8 @@ router.get('/public-service/:id', function (req, res, next) {
     })
   })
 
-// public section
-router.get('/public-section/:id', function (req, res, next) {
+// public profile section
+router.get('/public-profile-section/:id', function (req, res, next) {
     const id = req.params.id;
 
     Section.findOne({"service": id}, (err, user) => {
@@ -45,5 +45,7 @@ router.get('/public-section/:id', function (req, res, next) {
         }
     })
 })
+
+
 
 module.exports = router;
