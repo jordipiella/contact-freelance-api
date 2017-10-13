@@ -15,7 +15,6 @@ const auth = require('./routes/auth');
 
 const users_api = require('./routes/users_api');
 const mails = require('./routes/mails');
-const public = require('./routes/public');
 const search = require('./routes/search');
 const contacts = require('./routes/contacts');
 const services = require('./routes/services');
