@@ -11,13 +11,19 @@ const cors = require('cors')({ exposedHeaders: ['X-ResponseTime'] });
 const index = require('./routes/index');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
-const api = require('./routes/api');
-const mail = require('./routes/mail');
-const public = require('./routes/public')
+const users_api = require('./routes/users_api');
+const mails = require('./routes/mails');
+const public = require('./routes/public');
+const search = require('./routes/search');
+const contacts = require('./routes/contacts');
+const services = require('./routes/services');
+const sections = require('./routes/sections');
+
+
+
 
 require("dotenv").config();
 
-// Testing git collaborator
 
 if (process.env.NODE_ENV === 'development') {
   mongoose.connect(process.env.DATABASE);
@@ -51,7 +57,7 @@ app.use('/', auth);
 app.use('/', public);
 //app.use('/api', api);
 
-app.use('/api', passport.authenticate('jwt', { session: false }), api);
+app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections);
 
 
 //app.use('/users', users);
