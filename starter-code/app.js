@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('./config/passport');
+const nodemailer = require('./config/nodemailer');
 const cors = require('cors')({ exposedHeaders: ['X-ResponseTime'] });
 
 const index = require('./routes/index');
@@ -60,7 +61,7 @@ app.use('/', publicProfile);
 app.use('/', publicService);
 //app.use('/api', api);
 
-app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections);
+app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections, mails);
 
 
 //app.use('/users', users);
