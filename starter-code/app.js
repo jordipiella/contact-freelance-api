@@ -21,6 +21,7 @@ const services = require('./routes/services');
 const sections = require('./routes/sections');
 const publicProfile = require('./routes/public-profile');
 const publicService = require('./routes/public-service');
+const publicSection = require('./routes/public-section');
 
 
 
@@ -58,6 +59,7 @@ app.use('/doc', index);
 app.use('/', auth);
 app.use('/', publicProfile);
 app.use('/', publicService);
+app.use('/', publicSection);
 //app.use('/api', api);
 
 app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections);
