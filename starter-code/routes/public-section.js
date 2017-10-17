@@ -7,8 +7,8 @@ const Service = require("../models/service");
 const Section = require("../models/section");
 const Contact = require("../models/contact");
 
-router.get('/public-section/:id', function (req, res, next) {
-  const id = req.params.id;
+router.get('/public-section/:sectionId', function (req, res, next) {
+  const id = req.params.sectionId;
   let sectionAll = {}
 
   Section.findOne({ '_id': id }, (err, section) => {
