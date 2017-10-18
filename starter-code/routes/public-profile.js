@@ -22,7 +22,6 @@ router.get('/public-profile/:id', function (req, res, next) {
 // public profile service and avoid the change of url on browser.
 router.get('/public-profile-service/:id', function (req, res, next) {
     const id = req.params.id;
-  
     Service.find({ "user" : id }, (err, user) => {
         if (err) {
             res.json(err);
@@ -32,18 +31,6 @@ router.get('/public-profile-service/:id', function (req, res, next) {
     });
   });
 
-// public profile section
-router.get('/public-profile-section/:id', function (req, res, next) {
-    const id = req.params.id;
-
-    Section.findOne({ "service" : id }, (err, user) => {
-        if (err) {
-            res.json(err);
-        } else {
-            res.status(200).json(user);
-        }
-    });
-});
 
 
 

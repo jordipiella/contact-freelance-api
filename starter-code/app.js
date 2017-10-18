@@ -61,9 +61,11 @@ app.use('/', auth);
 app.use('/', publicProfile);
 app.use('/', publicService);
 app.use('/', publicSection);
+app.use('/', mails);
+
 //app.use('/api', api);
 
-app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections, mails);
+app.use('/api', passport.authenticate('jwt', { session: false }), users_api, search, contacts, services, sections);
 
 
 //app.use('/users', users);
