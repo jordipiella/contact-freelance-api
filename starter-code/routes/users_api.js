@@ -54,7 +54,8 @@ router.put('/user/:id', function (req, res, next) {
         linkedin: req.body.linkedin,
         facebook: req.body.facebook,
         google: req.body.google,
-        web: req.body.web
+        web: req.body.web,
+        url: req.body.url
     };
 
     User.findByIdAndUpdate(id, userToUpdate, { new: true }, function (err) {
