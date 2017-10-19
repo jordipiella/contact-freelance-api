@@ -12,7 +12,8 @@ const sectionSchema = new Schema({
         photo: String
     }],
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    service: { type: Schema.Types.ObjectId, ref: 'Service' }
+    service: { type: Schema.Types.ObjectId, ref: 'Service' },
+    url: String
 }, {
         timestamps: {
             createdAt: "created_at",
