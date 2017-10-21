@@ -93,7 +93,8 @@ router.post('/section/image', upload.single('file'), function (req, res, next) {
             bigImage: `/uploads/${req.file.filename}`,
             portfolio: req.body.portfolio,
             user: req.body.user,
-            service: req.body.service
+            service: req.body.service,
+            url: req.body.url
         })
 
         newSection.save((err, section) => {
