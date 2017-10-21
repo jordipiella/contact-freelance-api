@@ -5,7 +5,10 @@ const serviceSchema = new Schema({
     name: String,
     description: String,
     tags: [],
-    bigImage: String,
+    bigImage: {
+        type: String,
+        default: '/images/service-default.jpg'
+    },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }]
 }, {

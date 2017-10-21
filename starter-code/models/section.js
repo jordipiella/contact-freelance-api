@@ -5,7 +5,10 @@ const sectionSchema = new Schema({
     name: String,
     description: String,
     tags: [],
-    bigImage: String,
+    bigImage: {
+        type: String,
+        default: '/images/section-default.jpg'
+    },
     portfolio: [{
         name: String,
         description: String,

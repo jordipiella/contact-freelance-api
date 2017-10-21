@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/jwtoptions');
 const upload = require('../config/multer');
 const arrayTags = require('../helpers/arrayTags');
+const formatTags = require('../helpers/formatTags');
+
 // Our user model
 const User = require("../models/user");
 const Service = require("../models/service");
@@ -46,37 +48,52 @@ router.get('/section/:id', function (req, res, next) {
     });
 });
 
-// router.post('/section', function (req, res, next) {
-//     Section.findOne({ "name": req.body.name }, "name", (err, name) => {
-//         if (name !== null) {
-//             res.status(400).json({ message: 'this name already exist, sorry bro' });
-//             return;
-//         }
-//         let tags = arrayTags(req.body.tags);
+router.post('/section', function (req, res, next) {
+    Section.findOne({ "name": req.body.name }, "name", (err, name) => {
+        if (name !== null) {
+            res.status(400).json({ message: 'this name already exist, sorry bro' });
+            return;
+        }
+        let tags = formatTags(req.body.tags);
 
-//         const newSection = Section({
-//             name: req.body.name,
-//             description: req.body.description,
-//             tags: tags,
-//             portfolio: req.body.portfolio,
-//             user: req.body.id,
-//             service: req.body.service
-//         });
+        const newSection = Section({
+            name: req.body.name,
+            description: req.body.description,
+            tags: tags,
+            portfolio: req.body.portfolio,
+            user: req.body.user,
+            service: req.body.service,
+            bigImage: req.body.bigImage
+        });
 
-//         newSection.save((err, section) => {            
-//             User.findById({ "_id": req.body.id }, (err, user)=>{
-//                 user.sections.push(section._id);
-//                 User.save((user)=>{
-//                     if (err) {
-//                         return res.status(400).json({ message: err });
-//                     } else {
-//                         return res.status(200).json({ message: "ok", section: section });
-//                     }
-//                 });
-//             });
-//         });
-//     });
-// });
+        newSection.save((err, section) => {
+            console.log('section', section, section.user)
+            if (err) {
+                return res.status(400).json({ message: err });
+            } else {
+                User.findById({ "_id": section.user }, (err, user) => {
+                    if (err) {
+                        return res.status(400).json({ message: err });
+                    } else {
+                        user.sections.push(section._id);
+                        user.save((user) => {
+                            Service.findById({ "_id": section.service }, (err, service) => {
+                                if (err) {
+                                    res.status(400).json({ message: err });
+                                } else {
+                                    service.sections.push(section._id);
+                                    service.save((service) => {
+                                        return res.status(200).json({ message: "ok", section: section });
+                                    })
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
 
 router.post('/section/image', upload.single('file'), function (req, res, next) {
     Section.findOne({ "name": req.body.name }, "name", (err, name) => {

@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/jwtoptions');
 const upload = require('../config/multer');
 const arrayTags = require('../helpers/arrayTags');
+const formatTags = require('../helpers/formatTags');
+
 // Our user model
 const User = require("../models/user");
 const Service = require("../models/service");
@@ -51,11 +53,12 @@ router.post('/service', function (req, res, next) {
             res.status(400).json({ message: 'this name already exist, sorry bro' });
             return;
         }
+        let tags = formatTags(req.body.tags);
 
         const newService = Service({
             name: req.body.name,
             description: req.body.description,
-            tags: req.body.tags,
+            tags: tags,
             user: req.body.user
         });
 
@@ -63,7 +66,16 @@ router.post('/service', function (req, res, next) {
             if (err) {
                 return res.status(400).json({ message: err });
             } else {
-                return res.status(200).json({ message: "ok", service: service });
+                User.findById({ "_id": service.user }, (err, user) => {
+                    if (err) {
+                        return res.status(400).json({ message: err });
+                    } else {
+                        user.services.push(service._id);
+                        user.save((user) => {
+                            return res.status(200).json({ message: "ok", section: service });
+                        });
+                    }
+                });
             }
         });
     });
