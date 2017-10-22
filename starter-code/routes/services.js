@@ -119,12 +119,13 @@ router.post('/service/image/', upload.single('file'), function (req, res) {
 
 router.put('/service/:id', function (req, res, next) {
     const id = req.params.id;
+    let tags = formatTags(req.body.tags);
+
     const serviceUpdates = {
         name: req.body.name,
         description: req.body.description,
-        tags: req.body.tags,
-        bigImage: req.body.bigImage,
-        user: req.body.id
+        tags: tags,
+        user: req.body.user
     };
     Service.findByIdAndUpdate({ _id: id }, serviceUpdates, { new: true }, (err, service) => {
         if (err) {
