@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: String,
-    surname: String,
+    name: {type: String, index: true},
+    surname: {type: String, index: true},
     email: String,
     password: String,
     phone: String,
-    city: String,
-    country: String,
-    klaim: String,
-    tags: [],
+    city: {type: String, index: true},
+    country: {type: String, index: true},
+    klaim: {type: String, index: true},
+    tags: {type: [String], index: true},
     linkedin: String,
     facebook: String,
     google:String,
