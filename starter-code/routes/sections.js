@@ -160,25 +160,24 @@ router.put('/section/:id', function (req, res, next) {
 });
 
 router.post('/section-update/image', upload.single('file'), function (req, res, next) {
-    console.log('entra')
-    const id = req.params.id;
+
+    const id = req.body.id;
     let tags = arrayTags(req.body.tags);
-    console.log(req.body.tags)
+
     const sectionUpdates = {
-        _id: req.body._id,
         name: req.body.name,
         description: req.body.description,
         bigImage: `/uploads/${req.file.filename}`,
         tags: tags,
-        user: req.body.user
+        user: req.body.user,
+        service: req.body.service
     };
-    console.log('section update', sectionUpdates)
 
     Section.findByIdAndUpdate({ _id: id }, sectionUpdates, { new: true }, (err, section) => {
         if (err) {
             res.json(err);
         } else {
-            res.status(200).json({ message: "ok", section: section });
+            res.status(200).json({ message: "oky", section: section });
         }
     });
 });
