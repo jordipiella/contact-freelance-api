@@ -9,11 +9,11 @@ const Contact = require("../models/contact");
 
 
 // public service
-router.get('/public-service/:id', function (req, res, next) {
-  const id = req.params.id;
+router.get('/public-service/:url', function (req, res, next) {
+  const url = req.params.url;
   let serviceAll = {}
 
-  Service.findOne({ '_id': id }, (err, service) => {
+  Service.findOne({ 'url': url }, (err, service) => {
     User.findById({ '_id': service.user }, (err, user) => {
       Section.find({ 'service': service._id }, (err, section) => {
         console.log(section);

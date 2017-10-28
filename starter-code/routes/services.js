@@ -95,7 +95,8 @@ router.post('/service/image/', upload.single('file'), function (req, res) {
             description: req.body.description,
             tags: obj,
             user: req.body.user,
-            bigImage: `/uploads/${req.file.filename}`
+            bigImage: `/uploads/${req.file.filename}`,
+            url: req.body.url
         });
 
         newService.save((err, service) => {

@@ -7,11 +7,11 @@ const Service = require("../models/service");
 const Section = require("../models/section");
 const Contact = require("../models/contact");
 
-router.get('/public-section/:sectionId', function (req, res, next) {
-  const id = req.params.sectionId;
+router.get('/public-section/:url', function (req, res, next) {
+  const url = req.params.url;
   let sectionAll = {}
 
-  Section.findOne({ '_id': id }, (err, section) => {
+  Section.findOne({ 'url': url }, (err, section) => {
     User.findById({ '_id': section.user }, (err, user) => {
       Service.find({ '_id': section.service }, (err, service) => {
         console.log(service);

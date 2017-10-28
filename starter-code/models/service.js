@@ -10,7 +10,8 @@ const serviceSchema = new Schema({
         default: '/images/service-default.jpg'
     },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }]
+    sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
+    url: String
 }, {
         timestamps: {
             createdAt: "created_at",

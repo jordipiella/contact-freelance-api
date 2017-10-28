@@ -18,7 +18,8 @@ const userSchema = new Schema({
     userImage: String,
     bigImage: String,
     services: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
-    sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }]
+    sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
+    url: String
 }, {
         timestamps: {
             createdAt: "created_at",

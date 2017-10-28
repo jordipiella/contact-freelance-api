@@ -7,10 +7,10 @@ const Section = require("../models/section");
 const Contact = require("../models/contact");
 
 // public profile
-router.get('/public-profile/:id', function (req, res, next) {
-  const id = req.params.id;
+router.get('/public-profile/:url', function (req, res, next) {
+  const url = req.params.url;
 
-  User.findOne({ "_id" : id }, (err, user) => {
+  User.findOne({ "url" : url }, (err, user) => {
       if (err) {
           res.json(err);
       } else {
@@ -22,6 +22,7 @@ router.get('/public-profile/:id', function (req, res, next) {
 // public profile service and avoid the change of url on browser.
 router.get('/public-profile-service/:id', function (req, res, next) {
     const id = req.params.id;
+
     Service.find({ "user" : id }, (err, user) => {
         if (err) {
             res.json(err);

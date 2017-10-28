@@ -56,7 +56,8 @@ router.post('/user', function (req, res, next) {
             email: req.body.email,
             password: hashPass,
             name: req.body.name,
-            surname: req.body.surname
+            surname: req.body.surname,
+            url: req.body.url
         });
 
         newUser.save((err, user) => {
