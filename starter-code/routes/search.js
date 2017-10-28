@@ -38,19 +38,4 @@ router.get('/search-service/:query/:limit/:skip', function (req, res, next) {
     .skip(skip);
 });
 
-router.get('/search-section/:query/:limit/:skip', function (req, res, next) {
-    const query = req.params.query;
-    const limit = Number(req.params.limit);
-    const skip = Number(req.params.skip);
-    Section.find({ $or: [{ "name": { "$regex": query, "$options": "g, i" } }, { "description": { "$regex": query, "$options": "g" } }] }, (err, sectionList) => {
-        if (err) {
-            res.json(err);
-        } else {
-            res.status(200).json(sectionList);
-        }
-    })
-    .limit(limit)
-    .skip(skip);
-});
-
 module.exports = router;
