@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/jwtoptions');
-const upload = require('../config/multer');
+// const upload = require('../config/multer');
+
+const upload = require('../config/multers3')
+const path = require('path');
+
 const arrayTags = require('../helpers/arrayTags');
 const formatTags = require('../helpers/formatTags');
 
@@ -13,17 +17,7 @@ const Section = require("../models/section");
 const Contact = require("../models/contact");
 
 
-/* SECTION*/
-// router.get('/sections/:id', function (req, res, next) {
-//     const id = req.params.id;
-//     Section.find({ "service": id }, (err, section) => {
-//         if (err) {
-//             res.json(err)
-//         } else {
-//             res.status(200).json(section);
-//         }
-//     });
-// });
+
 router.get('/sections/:id', function (req, res, next) {
     const id = req.params.id;
     const p = req.params.p;
@@ -107,7 +101,7 @@ router.post('/section/image', upload.single('file'), function (req, res, next) {
             name: req.body.name,
             description: req.body.description,
             tags: tags,
-            bigImage: `/uploads/${req.file.filename}`,
+            bigImage: req.file.location,
             portfolio: req.body.portfolio,
             user: req.body.user,
             service: req.body.service,
@@ -161,14 +155,13 @@ router.put('/section/:id', function (req, res, next) {
 });
 
 router.post('/section-update/image', upload.single('file'), function (req, res, next) {
-
     const id = req.body.id;
     let tags = arrayTags(req.body.tags);
 
     const sectionUpdates = {
         name: req.body.name,
         description: req.body.description,
-        bigImage: `/uploads/${req.file.filename}`,
+        bigImage: req.file.location,
         tags: tags,
         user: req.body.user,
         service: req.body.service
