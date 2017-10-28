@@ -120,18 +120,40 @@ router.post('/service/image/', upload.single('file'), function (req, res) {
 
 router.put('/service/:id', function (req, res, next) {
     const id = req.params.id;
+    let tags = formatTags(req.body.tags);
+
     const serviceUpdates = {
         name: req.body.name,
         description: req.body.description,
-        tags: req.body.tags,
-        bigImage: req.body.bigImage,
-        user: req.body.id
+        tags: tags,
+        user: req.body.user
     };
     Service.findByIdAndUpdate({ _id: id }, serviceUpdates, { new: true }, (err, service) => {
         if (err) {
             res.json(err);
         } else {
             res.status(200).json({ message: "ok", service: service });
+        }
+    });
+});
+router.post('/service-update/image', upload.single('file'), function (req, res, next) {
+
+    const id = req.body.id;
+    let tags = arrayTags(req.body.tags);
+
+    const serviceUpdates = {
+        name: req.body.name,
+        description: req.body.description,
+        bigImage: `/uploads/${req.file.filename}`,
+        tags: tags,
+        user: req.body.user,
+    };
+
+    Service.findByIdAndUpdate({ _id: id }, serviceUpdates, { new: true }, (err, service) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json({ message: "oky", service: service });
         }
     });
 });

@@ -144,13 +144,12 @@ router.post('/section/image', upload.single('file'), function (req, res, next) {
 
 router.put('/section/:id', function (req, res, next) {
     const id = req.params.id;
+    let tags = formatTags(req.body.tags);
     const sectionUpdates = {
         name: req.body.name,
         description: req.body.description,
-        tags: req.body.tags,
-        bigImage: req.body.bigImage,
-        portfolio: req.body.portfolio,
-        user: req.body.id
+        tags: tags,
+        user: req.body.user
     };
     Section.findByIdAndUpdate({ _id: id }, sectionUpdates, { new: true }, (err, section) => {
         if (err) {
@@ -160,6 +159,30 @@ router.put('/section/:id', function (req, res, next) {
         }
     });
 });
+
+router.post('/section-update/image', upload.single('file'), function (req, res, next) {
+
+    const id = req.body.id;
+    let tags = arrayTags(req.body.tags);
+
+    const sectionUpdates = {
+        name: req.body.name,
+        description: req.body.description,
+        bigImage: `/uploads/${req.file.filename}`,
+        tags: tags,
+        user: req.body.user,
+        service: req.body.service
+    };
+
+    Section.findByIdAndUpdate({ _id: id }, sectionUpdates, { new: true }, (err, section) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.status(200).json({ message: "oky", section: section });
+        }
+    });
+});
+
 
 router.delete('/section/:id', function (req, res, next) {
     const id = req.params.id;
