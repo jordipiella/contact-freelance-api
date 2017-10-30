@@ -8,7 +8,6 @@ const userSchema = new Schema({
     password: String,
     phone: String,
     city: {type: String, index: true},
-    country: {type: String, index: true},
     klaim: {type: String, index: true},
     tags: {type: [String], index: true},
     linkedin: String,
