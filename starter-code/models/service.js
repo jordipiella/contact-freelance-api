@@ -7,7 +7,7 @@ const serviceSchema = new Schema({
     tags: [],
     bigImage: {
         type: String,
-        default: '/images/service-default.jpg'
+        default: process.env.URL + '/images/service-default.jpg'
     },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }],

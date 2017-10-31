@@ -7,7 +7,7 @@ const sectionSchema = new Schema({
     tags: [],
     bigImage: {
         type: String,
-        default: '/images/section-default.jpg'
+        default: process.env.URL + '/images/section-default.jpg'
     },
     portfolio: [{
         name: String,

@@ -164,15 +164,28 @@ router.delete('/service/:id', function (req, res, next) {
         if (err) {
             res.json(err);
         } else {
-            User.findOne({ "services": service.id }, (err, user) => {
-                const indexService = user.services.indexOf(id);
-                if (indexService > -1) {
-                    user.services.splice(indexService, 1);
-                    user.save((user) => {
-                        res.status(200).json({ message: "deleted", service: service });
+            Section.remove({"service": service.id}, (err, sections)=>{
+                if(err){
+                    res.json(err);
+                } else {
+                    User.findOne({ "services": service.id }, (err, user) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            const indexService = user.services.indexOf(id);
+                            if (indexService > -1) {
+                                user.services.splice(indexService, 1);
+                                user.save((user) => {
+                                    res.status(200).json({ message: "deleted", service: service });
+                                });
+                            }
+                        }
+
                     });
+
                 }
             });
+            
         }
     });
 });
