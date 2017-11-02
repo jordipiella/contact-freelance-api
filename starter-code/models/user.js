@@ -14,8 +14,14 @@ const userSchema = new Schema({
     facebook: String,
     google:String,
     web:String,
-    userImage: String,
-    bigImage: String,
+    userImage: {
+        type: String,
+        default: process.env.URL + '/images/service-default.jpg'
+    },
+    bigImage: {
+        type: String,
+        default: process.env.URL + '/images/service-default.jpg'
+    },
     services: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
     sections: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
     url: String

@@ -12,53 +12,36 @@ const Contact = require("../models/contact");
 router.get('/public-service/:url', function (req, res, next) {
   const url = req.params.url;
   let serviceAll = {}
+  
 
   Service.findOne({ 'url': url }, (err, service) => {
-    User.findById({ '_id': service.user }, (err, user) => {
-      Section.find({ 'service': service._id }, (err, section) => {
-        console.log(section);
-        
-        serviceAll = {
-          services: service,
-          user: user,
-          section: section
-        }
+    if (!service) {
+      res.status(200).json({ message: 'error' })
+    } else {
+      User.findById({ '_id': service.user }, (err, user) => {
         if (err) {
-          res.json(err);
+          res.status(200).json({ message: 'error' })
         } else {
-          res.status(200).json(serviceAll);
+          Section.find({ 'service': service._id }, (err, section) => {
+
+            serviceAll = {
+              services: service,
+              user: user,
+              section: section
+            }
+            if (err) {
+              res.status(200).json({ message: 'error' })
+            } else {
+              res.status(200).json(serviceAll);
+            }
+          });
         }
+        
       });
-    });
+    }
+    
+    
   });
 });
-
-// get id user from public service and avoid the change of url on browser.
-
-// router.get('/public-service-user/:id', function (req, res, next) {
-//   const id = req.params.id;
-
-//   User.find({ 'services': id }, (err, user) => {
-//     if (err) {
-//       res.json(err);
-//     } else {
-//       res.status(200).json(user);
-//     }
-//   })
-// })
-
-// router.get('/public-service-section/:id', function (req, res, next) {
-//   const id = req.params.id;
-
-//   Section.findOne({ 'service': id }, (err, section) => {
-//     if (err) {
-//       res.json(err);
-//     } else {
-//       res.status(200).json(section);
-//     }
-//   })
-// })
-
-
 
 module.exports = router;

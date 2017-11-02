@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/jwtoptions');
-const upload = require('../config/multer');
 const arrayTags = require('../helpers/arrayTags');
+const upload = require('../config/multers3')
+
 // Our user model
 const User = require("../models/user");
 const Service = require("../models/service");
@@ -70,7 +71,7 @@ router.put('/user/:id', function (req, res, next) {
 router.post('/user/edit/userImage/:id', upload.single('file'), function (req, res) {
     const id = req.params.id;
     const userToUpdate = {
-        userImage: `/uploads/${req.file.filename}`
+        userImage: req.file.location
     };
 
     User.findByIdAndUpdate(id, userToUpdate, function (err) {
@@ -85,7 +86,7 @@ router.post('/user/edit/userImage/:id', upload.single('file'), function (req, re
 router.post('/user/edit/bigImage/:id', upload.single('file'), function (req, res) {
     const id = req.params.id;
     const userToUpdate = {
-        bigImage: `/uploads/${req.file.filename}`
+        bigImage: req.file.location
     };
 
     User.findByIdAndUpdate(id, userToUpdate, function (err) {
