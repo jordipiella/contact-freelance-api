@@ -31,7 +31,7 @@ router.get('/users', function (req, res, next) {
 router.get('/user/:id', function (req, res, next) {
     const id = req.params.id;
 
-    User.findOne({ "_id": id }, (err, user) => {
+    User.findById({ "_id": id }, (err, user) => {
         if (err) {
             res.json(err);
         } else {
