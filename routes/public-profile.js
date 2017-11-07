@@ -11,6 +11,7 @@ router.get('/public-profile/:url', function (req, res, next) {
   const url = req.params.url;
 
   User.findOne({ "url" : url }, (err, user) => {
+      console.log('user db', user)
       if (err) {
           res.json(err);
       } else {

@@ -57,7 +57,8 @@ router.post('/section', function (req, res, next) {
             portfolio: req.body.portfolio,
             user: req.body.user,
             service: req.body.service,
-            bigImage: req.body.bigImage
+            bigImage: req.body.bigImage,
+            url: req.body.url
         });
 
         newSection.save((err, section) => {
@@ -143,7 +144,8 @@ router.put('/section/:id', function (req, res, next) {
         name: req.body.name,
         description: req.body.description,
         tags: tags,
-        user: req.body.user
+        user: req.body.user,
+        url: req.body.url
     };
     Section.findByIdAndUpdate({ _id: id }, sectionUpdates, { new: true }, (err, section) => {
         if (err) {
@@ -164,7 +166,8 @@ router.post('/section-update/image', upload.single('file'), function (req, res, 
         bigImage: req.file.location,
         tags: tags,
         user: req.body.user,
-        service: req.body.service
+        service: req.body.service,
+        url: req.body.url
     };
 
     Section.findByIdAndUpdate({ _id: id }, sectionUpdates, { new: true }, (err, section) => {

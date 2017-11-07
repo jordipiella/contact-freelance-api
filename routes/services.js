@@ -59,7 +59,8 @@ router.post('/service', function (req, res, next) {
             name: req.body.name,
             description: req.body.description,
             tags: tags,
-            user: req.body.user
+            user: req.body.user,
+            url: req.body.url
         });
 
         newService.save((err, service) => {
@@ -126,7 +127,8 @@ router.put('/service/:id', function (req, res, next) {
         name: req.body.name,
         description: req.body.description,
         tags: tags,
-        user: req.body.user
+        user: req.body.user,
+        url: req.body.url
     };
     Service.findByIdAndUpdate({ _id: id }, serviceUpdates, { new: true }, (err, service) => {
         if (err) {
@@ -149,6 +151,7 @@ router.post('/service-update/image', upload.single('file'), function (req, res, 
         bigImage: req.file.location,
         tags: tags,
         user: req.body.user,
+        url: req.body.url
     };
 
     Service.findByIdAndUpdate({ _id: id }, serviceUpdates, { new: true }, (err, service) => {
@@ -162,15 +165,19 @@ router.post('/service-update/image', upload.single('file'), function (req, res, 
 
 router.delete('/service/:id', function (req, res, next) {
     const id = req.params.id;
+    console.log('params', id)
     Service.findByIdAndRemove({ _id: id }, (err, service) => {
+        console.log('ok 1', id)
         if (err) {
             res.json(err);
         } else {
             Section.remove({"service": service.id}, (err, sections)=>{
+                console.log('ok 2', id, service.id)
                 if(err){
                     res.json(err);
                 } else {
                     User.findOne({ "services": service.id }, (err, user) => {
+                        console.log('ok 3', id, service.id)
                         if (err) {
                             res.json(err);
                         } else {

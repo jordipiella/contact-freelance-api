@@ -3,6 +3,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/jwtoptions');
 const arrayTags = require('../helpers/arrayTags');
+const formatTags = require('../helpers/formatTags');
+
 const upload = require('../config/multers3')
 
 // Our user model
@@ -43,7 +45,8 @@ router.get('/user/:id', function (req, res, next) {
 //edit user
 router.put('/user/:id', function (req, res, next) {
     const id = req.params.id;
-    
+    let tags = formatTags(req.body.tags);
+
     const userToUpdate = {
         name: req.body.name,
         surname: req.body.surname,
@@ -51,7 +54,7 @@ router.put('/user/:id', function (req, res, next) {
         city: req.body.city,
         country: req.body.country,
         klaim: req.body.klaim,
-        tags: req.body.tags,
+        tags: tags,
         linkedin: req.body.linkedin,
         facebook: req.body.facebook,
         google: req.body.google,
