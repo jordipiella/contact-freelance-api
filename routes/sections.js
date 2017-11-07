@@ -49,7 +49,7 @@ router.post('/section', function (req, res, next) {
             return;
         }
         let tags = formatTags(req.body.tags);
-
+        
         const newSection = Section({
             name: req.body.name,
             description: req.body.description,

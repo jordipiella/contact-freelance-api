@@ -139,7 +139,9 @@ router.put('/service/:id', function (req, res, next) {
 router.post('/service-update/image', upload.single('file'), function (req, res, next) {
 
     const id = req.body.id;
+    console.log('in',req.body.tags)
     let tags = arrayTags(req.body.tags);
+    console.log('out',tags)
 
     const serviceUpdates = {
         name: req.body.name,
