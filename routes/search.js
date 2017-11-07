@@ -12,7 +12,7 @@ router.get('/search-user/:query/:limit/:skip', function (req, res, next) {
     const query = req.params.query;
     const limit = Number(req.params.limit);
     const skip = Number(req.params.skip);
-    User.find({ $or: [{ "name": { "$regex": query, "$options": "g, i" } }] }, (err, usersList) => {
+    User.find({ $or: [{ "name": { "$regex": query, "$options": "g, i" } }, { "klaim": { "$regex": query, "$options": "g, i" } }, { "tags": { "$regex": query, "$options": "g, i" } }, { "city": { "$regex": query, "$options": "g, i" } }] }, (err, usersList) => {
         if (err) {
             res.json(err);
         } else {
@@ -27,7 +27,7 @@ router.get('/search-service/:query/:limit/:skip', function (req, res, next) {
     const query = req.params.query;
     const limit = Number(req.params.limit);
     const skip = Number(req.params.skip);
-    Service.find({ $or: [{ "name": { "$regex": query, "$options": "g, i" } }, { "description": { "$regex": query, "$options": "g" } }] }, (err, serviceList) => {
+    Service.find({ $or: [{ "name": { "$regex": query, "$options": "g, i" } }, { "description": { "$regex": query, "$options": "g, i" } }, { "tags": { "$regex": query, "$options": "g, i" } }] }, (err, serviceList) => {
         if (err) {
             res.json(err);
         } else {
