@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+require("dotenv").config();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
