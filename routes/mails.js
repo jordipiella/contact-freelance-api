@@ -98,6 +98,7 @@ float:none!important;} table.social div[class="column"] { width:auto!important; 
                         <br>
                         <p style="text-align:center"><a title="visit contacT-Freelance" href="http://www.contactfreelance.com"><img src="${process.env.URL}/images/contact-freelance.jpg"/></a></p>
                         <br><br>
+                        ${process.env.URL}/images/contact-freelance.jpg
 						<h3>Hi, ${req.body.name}</h3>
                         <p class="lead">
                         ${req.body.message}<br>
