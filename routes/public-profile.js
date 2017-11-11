@@ -11,9 +11,8 @@ router.get('/public-profile/:url', function (req, res, next) {
   const url = req.params.url;
 
   User.findOne({ "url" : url }, (err, user) => {
-      console.log('user db', user)
-      if (err) {
-          res.json(err);
+      if (!user) {
+          res.status(404).json({ message: 'error' });
       } else {
           res.status(200).json(user);
       }
@@ -32,8 +31,5 @@ router.get('/public-profile-service/:id', function (req, res, next) {
         }
     });
   });
-
-
-
 
 module.exports = router;

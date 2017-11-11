@@ -16,11 +16,11 @@ router.get('/public-service/:url', function (req, res, next) {
 
   Service.findOne({ 'url': url }, (err, service) => {
     if (!service) {
-      res.status(200).json({ message: 'error' })
+      res.status(404).json({ message: 'error' })
     } else {
       User.findById({ '_id': service.user }, (err, user) => {
         if (err) {
-          res.status(200).json({ message: 'error' })
+          res.status(404).json({ message: 'error' })
         } else {
           Section.find({ 'service': service._id }, (err, section) => {
 
@@ -30,7 +30,7 @@ router.get('/public-service/:url', function (req, res, next) {
               section: section
             }
             if (err) {
-              res.status(200).json({ message: 'error' })
+              res.status(404).json({ message: 'error' })
             } else {
               res.status(200).json(serviceAll);
             }

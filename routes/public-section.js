@@ -9,30 +9,30 @@ const Contact = require("../models/contact");
 
 router.get('/public-section/:url', function (req, res, next) {
   const url = req.params.url;
-  let sectionAll = {}
-
+  let sectionAll = {};
   Section.findOne({ 'url': url }, (err, section) => {
-    User.findById({ '_id': section.user }, (err, user) => {
-      Service.find({ '_id': section.service }, (err, service) => {
-        console.log(service);
-        
-        sectionAll = {
-          section: section,         
-          user: user,
-          services: service
-        }
-        if (err) {
-          res.json(err);
+    if(!section){
+      res.status(404).json({ message: 'error' });
+    } else {
+      User.findById({ '_id': section.user }, (err, user) => {
+        if(err){
+          res.status(404).json({ message: 'error' });
         } else {
-          res.status(200).json(sectionAll);
+          Service.find({ '_id': section.service }, (err, service) => {
+            if (err) {
+              res.status(404).json({ message: 'error' });
+            } else {
+              sectionAll = {
+                section: section,         
+                user: user,
+                services: service
+              }
+              res.status(200).json(sectionAll);
+            }
+          });
         }
       });
-    });
+    }    
   });
 });
-
-
-
-
-
 module.exports = router;
