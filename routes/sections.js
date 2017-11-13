@@ -43,6 +43,7 @@ router.get('/section/:id', function (req, res, next) {
 });
 
 router.post('/section', function (req, res, next) {
+    
     Section.findOne({ "name": req.body.name }, "name", (err, name) => {
         if (name !== null) {
             res.status(400).json({ message: 'this name already exist, sorry bro' });
@@ -60,6 +61,7 @@ router.post('/section', function (req, res, next) {
             bigImage: req.body.bigImage,
             url: req.body.url
         });
+        
 
         newSection.save((err, section) => {
             console.log('section', section, section.user)
@@ -91,6 +93,7 @@ router.post('/section', function (req, res, next) {
 });
 
 router.post('/section/image', upload.single('file'), function (req, res, next) {
+    
     Section.findOne({ "name": req.body.name }, "name", (err, name) => {
         if (name !== null) {
             res.status(400).json({ message: 'this name already exist, sorry bro' });
@@ -107,7 +110,8 @@ router.post('/section/image', upload.single('file'), function (req, res, next) {
             user: req.body.user,
             service: req.body.service,
             url: req.body.url
-        })
+        });
+        
 
         newSection.save((err, section) => {
             if (err) {
@@ -157,6 +161,7 @@ router.put('/section/:id', function (req, res, next) {
 });
 
 router.post('/section-update/image', upload.single('file'), function (req, res, next) {
+    console.log('entra', req.body)
     const id = req.body.id;
     let tags = arrayTags(req.body.tags);
 

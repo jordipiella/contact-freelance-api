@@ -38,7 +38,7 @@ router.get('/services/:id', function (req, res, next) {
 
 router.get('/service/:id', function (req, res, next) {
     const id = req.params.id;
-    Service.findOne({ "_id": id }, (err, service) => {
+    Service.findById({ "_id": id }, (err, service) => {
         if (err) {
             res.json(err);
         } else {
