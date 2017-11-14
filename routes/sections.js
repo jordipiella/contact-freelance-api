@@ -162,10 +162,6 @@ router.put('/section/:id', function (req, res, next) {
 });
 
 router.post('/section-update/image', upload.single('file'), function (req, res, next) {
-<<<<<<< HEAD
-    console.log('entra', req.body)
-=======
->>>>>>> 7ad35401e283bafdbf793d33f6c7b939f283f59b
     const id = req.body.id;
     let tags = arrayTags(req.body.tags);
 
