@@ -20,6 +20,7 @@ router.post('/send', function (req, res, next) {
         section : req.body.section
     });
     
+    console.log("Email template", newContact)
     newContact.save((err, contact)=>{
         if(err){
             res.status(400).json({ message : err });
@@ -27,7 +28,7 @@ router.post('/send', function (req, res, next) {
             rejectUnauthorized: false
             let mailOptions = {
                 from: 'info@contactfreelance.com',
-                to: `${req.body.userEmail}`,
+                to: `${req.body.email}`,
                 bcc: 'info@casamaka.com',
                 subject: `Contact from contacT-Freelance: ${req.body.name} `, 
                 html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -103,8 +104,8 @@ float:none!important;} table.social div[class="column"] { width:auto!important; 
                         <p class="lead">
                         ${req.body.message}<br>
                         tel: ${req.body.tel}<br>
-                        My email: ${req.body.email}</p>
-                        <!--userEmail: ${req.body.userEmail}
+                        <!-- My email: ${req.body.email}</p>
+                        userEmail: ${req.body.userEmail}
                         origin: ${req.body.origin}
                         user: ${req.body.user}
                         service:${req.body.service}
@@ -131,17 +132,18 @@ float:none!important;} table.social div[class="column"] { width:auto!important; 
     </tr>
 </table>
 </body>
-</html>
-                
-                ` //We can create template
+</html>` 
+//We can create template
             };
             console.log('mail',mailOptions)
 
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    return console.log(error);
+                    // return console.log(error);
+                    console.log("Mail error")
                     res.status(400).json({ message : error })
                 } else {
+                    console.log("Mail send")
                     res.status(200).json({ message: info.messageId, contact: newContact });
                 }
             });
