@@ -29,6 +29,7 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
+    "@angular/cli": "^1.6.1",
     "nodemon": "^1.12.1"
   }
 }
